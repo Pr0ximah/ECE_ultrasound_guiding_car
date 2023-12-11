@@ -1,23 +1,18 @@
 #include <Arduino.h>
-// #include "constDef.h"
-#include "motor.h"
 
-motor m1(10, 9);
-motor m2(11, 12);
+#include "chassis.h"
 
 void setup() {
-    // pinMode(10, OUTPUT);
-    // pinMode(9, OUTPUT);
-    // pinMode(11, OUTPUT);
-    // pinMode(12, OUTPUT);
-    // digitalWrite(9, LOW);
-    // analogWrite(10, 255);
-    // digitalWrite(11, HIGH);
-    // analogWrite(12, 255);// 
+    Chassis chassis;
+    while (true) {
+        if (Serial.readString() == "START") {
+            // chassis.goForward(30, 10);
+            chassis.rotate(50, false);
+            delay(1000);
+            chassis.stop();
+        }
+        delay(10);
+    }
 }
 
-void loop() {
-    m1.spin(60, reverse);
-    m2.spin(30, forward);
-    delay(10);
-}
+void loop() {}
