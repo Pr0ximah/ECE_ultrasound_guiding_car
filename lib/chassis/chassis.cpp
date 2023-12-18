@@ -39,3 +39,9 @@ void Chassis::rotate(double percent, bool clockwise) {
     motorL.spin(coeff * percent, forward);
     motorR.spin(coeff * percent, reverse);
 }
+
+void Chassis::update() {
+    usl.update();
+    usr.update();
+
+}
