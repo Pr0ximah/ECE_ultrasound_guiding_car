@@ -2,19 +2,18 @@
 
 #include "chassis.h"
 // #include "screen.h"
-#include "usSensor.h"
+#include "motor.h"
 
 void setup() {
     // Chassis chassis;
     // while (true) {
-    //     if (Serial.readString() == "START") {
-    //         // chassis.goForward(30, 10);
-    //         chassis.rotate(50, false);
-    //         delay(1000);
-    //         chassis.stop();
-    //     }
+    //     chassis.goForward(40, 0);
+    //     // chassis.rotate(50, false);
+    //     delay(1000);
+    //     chassis.stop();
     //     delay(10);
     // }
+
     // Screen screen;
     // screen.print("hello");
     // Serial.begin(9600);
@@ -25,12 +24,13 @@ void setup() {
     //     }
     //     delay(10);
     // }
-    Serial.begin(9600);
-    US_Sensor us = US_Sensor(6);
+
+    Chassis *c = Chassis::getInstance();
     while (true) {
-        us.update();
-        Serial.println(us.getDistance());
-        delay(10);
+        c->update();
+        delay(30);
+        c->refreshFlagL = true;
+        c->refreshFlagR = true;
     }
 }
 

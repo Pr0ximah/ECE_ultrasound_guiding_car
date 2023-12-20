@@ -21,4 +21,9 @@ const int CLK = 8;
 const int usl_pin = 1;
 const int usr_pin = 2;
 
+// Ultrasound IGNORE NUM
+const long IGN_NUM = 100000;
+// Ultrasound jump time (ms)
+const int JUMP_T = 30;
+
 #endif  // _PORT_DEF_H
