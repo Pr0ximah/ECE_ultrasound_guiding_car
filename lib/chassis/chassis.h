@@ -23,8 +23,8 @@ private:
     int timeDiffLast = 0;
 
 public:
-    unsigned long long time_L;
-    unsigned long long time_R;
+    long time_L;
+    long time_R;
     bool refreshFlag;
 
     Chassis() {

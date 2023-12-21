@@ -5,12 +5,13 @@
 #include "motor.h"
 
 void setup() {
-    // Chassis chassis;
+    // delay(5000);
+    // Chassis *c = Chassis::getInstance();
     // while (true) {
-    //     chassis.goForward(40, 0);
+    //     c->goForward(30, 0);
     //     // chassis.rotate(50, false);
     //     delay(1000);
-    //     chassis.stop();
+    //     c->stop();
     //     delay(10);
     // }
 
@@ -28,7 +29,7 @@ void setup() {
     Chassis *c = Chassis::getInstance();
     while (true) {
         c->update();
-        delay(30);
+        delay(5);
         c->refreshFlag = true;
     }
 }

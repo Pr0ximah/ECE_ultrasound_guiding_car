@@ -14,7 +14,7 @@ double average(int arr[], int n) {
 
 void Chassis::goForward(double percent, double angle) {
     double k = 0.03;
-    double vL = percent + 5.5;
+    double vL = percent + 3.14;
     double vR = percent;
     int diffV = k * angle * percent;
     if (diffV > 0) {
@@ -42,7 +42,7 @@ void Chassis::goForward(double percent, double angle) {
         vL = 25;
         vR = vR * coeff;
     }
-    // Serial.println("vL: " + String(vL) + ",  vR: " + String(vR));
+    Serial.println("vL: " + String(vL) + ",  vR: " + String(vR));
     motorL.spin(vL, forward);
     motorR.spin(vR, forward);
 }
@@ -54,63 +54,22 @@ void Chassis::rotate(double percent, bool clockwise) {
 }
 
 void Chassis::update() {
-    // if (ignoredCnt > 30) {
-    //     if (!ignoreStat) {
-    //         ignoreStat = true;
-    //     }
-    //     ignoredCnt = 0;
-    // }
-    // if (ignoreStat && noignoredCnt > 30) {
-    //     if (ignoreStat) {
-    //         ignoreStat = false;
-    //     }
-    //     noignoredCnt = 0;
-    // }
-    // if (ignoreStat) {
-    //     rotate(35, true);
-    //     getAngleDiff();
-    // } else {
     double angleDiff = -getAngleDiff();
-    double k = 0.2;
-    // if (fabs(angleDiff) < 20) {
-    //     goForward(60, 0);
-    // } else {
-    //     goForward(60, angleDiff * k);
-    // }
-    // }
+    double k = 0.1;
+    goForward(50, angleDiff * k);
+    // goForward(50, 0);
 }
 
 double Chassis::getAngleDiff() {
-    int offset = 0;
-    timeDiffCur = Chassis::getInstance()->time_L - Chassis::getInstance()->time_R;
-    timeDiffLast = timeDiffCur;
-    Serial.println(timeDiffCur);
-    if (abs(timeDiffCur) < 6000 && abs(timeDiffCur - timeDiffLast) < 50) {
-        for (int i = 0; i < 9; i++) {
-            timeDiff[i] = timeDiff[i + 1];
-        }
-        timeDiff[9] = timeDiffCur;
-    }
-    double avg = average(timeDiff, 10);
-    // if (avg > IGN_NUM) {
-    //     if (!ignoreStat) {
-    //         ignoredCnt++;
-    //     }
-    // } else {
-    //     if (ignoreStat) {
-    //         noignoredCnt++;
-    //     }
-    // }
-    // temp_cnt++;
-    // Serial.println(avg + offset);
-    return avg + offset;
+    timeDiffCur = -Chassis::getInstance()->time_R;
+    return timeDiffCur;
 }
 
 void setL() {
     Chassis *c = Chassis::getInstance();
     if (c->refreshFlag) {
         c->refreshFlag = false;
-        c->time_R += 10;
+        c->time_R = 50;
     }
 }
 
@@ -118,6 +77,6 @@ void setR() {
     Chassis *c = Chassis::getInstance();
     if (c->refreshFlag) {
         c->refreshFlag = false;
-        c->time_R -= 10;
+        c->time_R = -50;
     }
 }
