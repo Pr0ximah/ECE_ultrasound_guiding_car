@@ -54,71 +54,83 @@ void Chassis::rotate(double percent, bool clockwise) {
 }
 
 void Chassis::update() {
-    if (ignoredCnt > 30) {
-        if (!ignoreStat) {
-            ignoreStat = true;
-        }
-        ignoredCnt = 0;
-    }
-    if (ignoreStat && noignoredCnt > 30) {
-        if (ignoreStat) {
-            ignoreStat = false;
-        }
-        noignoredCnt = 0;
-    }
-    if (ignoreStat) {
-        rotate(35, true);
-        getAngleDiff();
-    } else {
-        double angleDiff = -getAngleDiff();
-        double k = 0.2;
-        // if (fabs(angleDiff) < 20) {
-        //     goForward(60, 0);
-        // } else {
-        //     goForward(60, angleDiff * k);
-        // }
-    }
+    // if (ignoredCnt > 30) {
+    //     if (!ignoreStat) {
+    //         ignoreStat = true;
+    //     }
+    //     ignoredCnt = 0;
+    // }
+    // if (ignoreStat && noignoredCnt > 30) {
+    //     if (ignoreStat) {
+    //         ignoreStat = false;
+    //     }
+    //     noignoredCnt = 0;
+    // }
+    // if (ignoreStat) {
+    //     rotate(35, true);
+    //     getAngleDiff();
+    // } else {
+    double angleDiff = -getAngleDiff();
+    double k = 0.2;
+    // if (fabs(angleDiff) < 20) {
+    //     goForward(60, 0);
+    // } else {
+    //     goForward(60, angleDiff * k);
+    // }
+    // }
 }
 
 double Chassis::getAngleDiff() {
     int offset = 0;
     timeDiffLast = timeDiffCur;
-    timeDiffCur = time_L - time_R;
     Serial.println(timeDiffCur);
-    if (temp_cnt % 1 == 0 && (abs(timeDiffCur - timeDiffLast) < 1000)) {
-        temp_cnt = 0;
+    if (abs(timeDiffCur) < 6000 && abs(timeDiffCur - timeDiffLast) < 50) {
         for (int i = 0; i < 9; i++) {
             timeDiff[i] = timeDiff[i + 1];
         }
         timeDiff[9] = timeDiffCur;
     }
     double avg = average(timeDiff, 10);
-    if (avg > IGN_NUM) {
-        if (!ignoreStat) {
-            ignoredCnt++;
-        }
-    } else {
-        if (ignoreStat) {
-            noignoredCnt++;
-        }
-    }
-    temp_cnt++;
+    // if (avg > IGN_NUM) {
+    //     if (!ignoreStat) {
+    //         ignoredCnt++;
+    //     }
+    // } else {
+    //     if (ignoreStat) {
+    //         noignoredCnt++;
+    //     }
+    // }
+    // temp_cnt++;
     // Serial.println(avg + offset);
     return avg + offset;
 }
 
 void setL() {
     Chassis *c = Chassis::getInstance();
-    if (c->refreshFlagL) {
-        c->time_L = micros();
-        c->refreshFlagL = false;
+    if (c->refreshFlag) {
+        c->refreshFlag = false;
+        c->time_L = 0;
+        int cnt = 0;
+        while (digitalRead(usr_pin) == LOW) {
+            cnt++;
+            delayMicroseconds(1);
+        }  
+        Serial.println("cnt" + String(cnt));
+        c->time_R = cnt * 5;
     }
 }
 
 void setR() {
     Chassis *c = Chassis::getInstance();
-    if (c->refreshFlagR) {
-        c->time_R = micros();
-        c->refreshFlagR = false;
+    c->refreshFlag = false;
+    if (c->refreshFlag) {
+        c->time_R = 0;
+        int cnt = 0;
+        while (digitalRead(usl_pin) == LOW) {
+            cnt++;
+            delayMicroseconds(1);
+        }  
+        Serial.println("cnt" + String(cnt));
+        c->time_L = cnt * 5;
     }
 }

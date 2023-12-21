@@ -25,8 +25,7 @@ private:
 public:
     unsigned long long time_L;
     unsigned long long time_R;
-    bool refreshFlagL;
-    bool refreshFlagR;
+    bool refreshFlag;
 
     Chassis() {
         Serial.begin(9600);

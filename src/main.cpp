@@ -29,8 +29,8 @@ void setup() {
     while (true) {
         c->update();
         delay(30);
-        c->refreshFlagL = true;
-        c->refreshFlagR = true;
+        c->refreshFlag = true;
+        c->refreshFlag = true;
     }
 }
 

@@ -18,8 +18,8 @@ const int DI = 7;
 const int CLK = 8;
 
 // Ultrasound Sensor Pin
-const int usl_pin = 1;
-const int usr_pin = 2;
+const int usl_pin = 2;
+const int usr_pin = 3;
 
 // Ultrasound IGNORE NUM
 const long IGN_NUM = 100000;
