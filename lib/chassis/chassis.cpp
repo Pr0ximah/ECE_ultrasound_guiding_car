@@ -82,6 +82,7 @@ void Chassis::update() {
 
 double Chassis::getAngleDiff() {
     int offset = 0;
+    timeDiffCur = Chassis::getInstance()->time_L - Chassis::getInstance()->time_R;
     timeDiffLast = timeDiffCur;
     Serial.println(timeDiffCur);
     if (abs(timeDiffCur) < 6000 && abs(timeDiffCur - timeDiffLast) < 50) {
@@ -109,28 +110,14 @@ void setL() {
     Chassis *c = Chassis::getInstance();
     if (c->refreshFlag) {
         c->refreshFlag = false;
-        c->time_L = 0;
-        int cnt = 0;
-        while (digitalRead(usr_pin) == LOW) {
-            cnt++;
-            delayMicroseconds(1);
-        }  
-        Serial.println("cnt" + String(cnt));
-        c->time_R = cnt * 5;
+        c->time_R += 10;
     }
 }
 
 void setR() {
     Chassis *c = Chassis::getInstance();
-    c->refreshFlag = false;
     if (c->refreshFlag) {
-        c->time_R = 0;
-        int cnt = 0;
-        while (digitalRead(usl_pin) == LOW) {
-            cnt++;
-            delayMicroseconds(1);
-        }  
-        Serial.println("cnt" + String(cnt));
-        c->time_L = cnt * 5;
+        c->refreshFlag = false;
+        c->time_R -= 10;
     }
 }

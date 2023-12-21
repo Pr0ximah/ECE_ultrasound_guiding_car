@@ -30,7 +30,6 @@ void setup() {
         c->update();
         delay(30);
         c->refreshFlag = true;
-        c->refreshFlag = true;
     }
 }
 
